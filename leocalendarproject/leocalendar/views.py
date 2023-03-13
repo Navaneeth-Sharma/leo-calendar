@@ -51,7 +51,7 @@ def xcalendar_delete_event_view(request, view, event_id, date=None):
     return render(request, "base.html", context_handler.context)
 
 
-@login_required(redirect_field_name="account_login")
+# @login_required(redirect_field_name="account_login")
 def calendar_view(
     request,
     calendar_view,
@@ -72,7 +72,7 @@ def calendar_view(
 
     user = request.user
     context_handler = ContextHandler(user, session_key=get_session_key(request))
-    context_handler.set_context_for_calendar(calendar_view, date, class_slug)
+    context_handler.set_context_for_calendar(calendar_view, date)
 
     logger.info(
         f"Assigning {calendar_view} view with context {context_handler.context}"
@@ -82,7 +82,7 @@ def calendar_view(
     if request.META.get("HTTP_HX_REQUEST"):
         return render(
             request,
-            component_name or f"calendar/components/{calendar_view}.html",
+            component_name or f"components/{calendar_view}.html",
             context_handler.context,
         )
 

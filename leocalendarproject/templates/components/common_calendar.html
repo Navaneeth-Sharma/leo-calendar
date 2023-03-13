@@ -1,0 +1,63 @@
+{% load leocalendar_tags %}
+
+    <div class="sm:w-1/2 hidden w-full mx-auto max-w-md flex-none sm:border-l border-gray-100 py-10 px-8 lg:block justify-center" style="z-index: -1;">
+        <div class="flex items-center text-center text-gray-900">
+          <button type="button" hx-get="{% url calendar_view|add_view_to_string  current_date|get_previous_month_date  %}"
+            hx-trigger="click"
+            hx-target="#calendar-view"
+            hx-swap="innerHTML"
+            class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
+            <span class="sr-only">Previous month</span>
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="flex-auto text-sm font-semibold">{{current_date|date:"F  Y"}}</div>
+          <button type="button" hx-get="{% url calendar_view|add_view_to_string  current_date|get_next_month_date  %}" 
+            hx-trigger="click"
+            hx-target="#calendar-view"
+            hx-swap="innerHTML" class="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
+            <span class="sr-only">Next month</span>
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <div x-data="{ days: ['M', 'T', 'W', 'T', 'F', 'S', 'S'] }" class="mt-6 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
+          <template x-for="(day, index) in days" :key="index">
+            <span x-text="day"></span>
+          </template>
+        </div>
+        <div class="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+          {% for week in weeks %}
+            {% for day in week %}
+                {% if day == 0 %}
+                    <button class="rounded-tl-lg bg-gray-50 py-1.5 text-gray-400 hover:bg-gray-100 focus:z-10">
+                        <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full"></time>
+                    </button>
+                {%else%}
+                    {% if day|date:"Y-m-d" == todays_date|date:"Y-m-d" %}
+                        <button type="button" hx-get="{% url calendar_view|add_view_to_string  day|date:"Y-m-d" %}" 
+                            hx-trigger="click"
+                            hx-target="#calendar-view"
+                            hx-swap="innerHTML" class="bg-white py-1.5 text-gray-900 hover:bg-gray-100 focus:z-10">
+                            <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
+                              {{day|date:"j"}}
+                            </time>
+                        </button>
+                    {%else%}
+                        <button type="button" hx-get="{% url calendar_view|add_view_to_string  day|date:"Y-m-d"  %}" 
+                            hx-trigger="click"
+                            hx-target="#calendar-view"
+                            hx-swap="innerHTML"
+                            class="bg-white py-1.5  text-gray-900 hover:bg-gray-100 focus:z-10">
+                            <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full {% if current_date|date:"Y-m-d" == day|date:"Y-m-d" %} bg-blue-200 border-blue-500 border font-semibold{% endif %}">
+                                {{day|date:"j"}}
+                            </time>
+                        </button>
+                    {% endif %}
+                {%endif%}
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>

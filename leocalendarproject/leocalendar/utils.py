@@ -4,6 +4,8 @@ from schedule.models.calendars import Calendar
 from schedule.models.events import Event
 import datetime
 import pytz
+import json
+import redis
 
 
 class XCalendarManager:
@@ -145,7 +147,6 @@ class SCalendarEventManager:
         event_start_time = request.POST.get("event_start_time")
         event_end_time = request.POST.get("event_end_time")
 
-
         date_obj = datetime.datetime.strptime(event_date, "%Y-%m-%d").date()
 
         start_date = TimezoneManager.convert_to_utc_timezone(
@@ -208,12 +209,48 @@ class SCalendarEventManager:
             print(f"Error Caused while creating the event!")
 
 
-def redis_json_get_session():
-    pass
+redis_connection = None
 
 
-def redis_json_set_session():
-    pass
+def get_session(request):
+    request.session.session_key
+    if not request.session.exists(request.session.session_key):
+        request.session.create()
+    if not request.session.session_key:
+        request.session.save()
+    return request.session
 
-def get_session_key():
-    pass
+
+def get_session_key(request):
+    return get_session(request).session_key
+
+
+def redis_get_connection():
+    global redis_connection
+    if not redis_connection:
+        redis_connection = redis.Redis(host="redis", port=6379, db=1, socket_timeout=1)
+    return redis_connection
+
+
+cache = {}
+
+
+def redis_json_set(key, value, session_key=None):
+    rkey = session_key + "_" + str(key) if session_key else key
+    cache[rkey] = value
+    redis_get_connection().set(rkey, json.dumps(value))
+
+
+def redis_json_get(key, session_key=None):
+    rkey = session_key + "_" + str(key) if session_key else key
+    # value = redis_get_connection().get(rkey)
+    # return json.loads(value.decode("utf8").replace("'", '"'))
+    return cache.get(rkey, {})
+
+
+def redis_json_set_session(key, value, session_key):
+    redis_json_set(key, value, session_key)
+
+
+def redis_json_get_session(key, session_key):
+    return redis_json_get(key, session_key)

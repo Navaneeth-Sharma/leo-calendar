@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/htmx.org@1.8.5"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        .tooltip:hover .tooltip-text {
+          opacity: 1;
+        }
+        body{
+            font-family: 'Inter var';
+        }
+    </style>
+    
+</head>
+<body>
+    
+
+
+
+{% if calendar_view == "day" %}
+    {% include 'components/day.html' %}
+{% elif calendar_view == "week" %}
+    {% include 'components/week.html' %}
+{% elif calendar_view == "month" %}
+    {% include 'components/month.html' %}
+{% endif %}
+
+
+<script type="text/javascript">
+    function setTimezoneOffset() {
+      var timezone_offset_minutes = new Date().getTimezoneOffset();
+      timezone_offset_minutes = timezone_offset_minutes == 0 ? 0 : -timezone_offset_minutes;
+      document.cookie = "timezone_offset=" + timezone_offset_minutes;
+    }
+    setTimezoneOffset();
+
+    
+    function convertUTCDateToLocalDate(dateString) {
+        if (dateString === ''){
+            return ''
+        }
+        var date = new Date(dateString);
+        return date;   
+    }
+
+    function convertLocalDateToUTCDate(date) {
+      var newDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+    
+      return newDate;
+    }
+
+    function getGridRow(datetime) {
+        // Convert the datetime to a time string and calculate the grid row value
+        var time = new Date(datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        var hour = parseInt(time.slice(0, 2));
+        var minute = parseInt(time.slice(3, 5));
+        var value = (hour * 12) + (minute / 5) + 2;
+        return Math.floor(value);
+    }
+
+    function getGridSpan(start, end) {
+        // Parse the start and end datetime strings and calculate the grid span value
+        var startTime = new Date(start);
+        var endTime = new Date(end);
+        var startHour = startTime.getHours();
+        var startMinute = startTime.getMinutes();
+        var endHour = endTime.getHours();
+        var endMinute = endTime.getMinutes();
+        var delta = ((endHour * 12) + (endMinute / 5) + 2) - ((startHour * 12) + (startMinute / 5) + 2);
+        return Math.floor(delta);
+      }
+      
+    function getTimeForEventForm (datetime){
+        try{
+            return datetime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })
+        } catch {
+            console.log("coudn't find input. Ignoring the and return ''")
+            return ''
+        }
+    }
+
+    function getDateForEventForm(datetime){
+        try{
+            return datetime.toISOString().slice(0, 10)
+        } catch {
+            console.log("coudn't find input. for Ignoring the and return ''")
+            return ''
+        }
+    }
+
+
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+</html>
