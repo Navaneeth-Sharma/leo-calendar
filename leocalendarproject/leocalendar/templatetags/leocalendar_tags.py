@@ -62,3 +62,8 @@ def get_events_for_day(events, current_date):
     end_date = current_date + datetime.timedelta(days=1)
     # TODO:database query | need to improve the approach
     return events.filter(start__gte=current_date, end__lt=end_date)
+
+@register.filter
+def get_item(dictionary, key):
+    if dictionary:
+        return dictionary.get(str(key))
