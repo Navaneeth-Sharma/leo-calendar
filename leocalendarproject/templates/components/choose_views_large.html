@@ -3,18 +3,18 @@
     hx-trigger="click"
     hx-target="#calendar-view"
     hx-push-url="true"
-    @click="openCalendarViewDropDown =! openCalendarViewDropDown"
+    @click="openCalendarViewDropDown = false"
     hx-swap="innerHTML"  class="cursor-pointer text-gray-700 hover:bg-blue-50 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Day view</a>
     <a hx-get="{% url 'week-view'  current_date|date:'Y-m-d'  %}"
     hx-trigger="click"
     hx-target="#calendar-view"
     hx-push-url="true"
-    @click="openCalendarViewDropDown =! openCalendarViewDropDown"
+    @click="openCalendarViewDropDown = false"
     hx-swap="innerHTML"  class="cursor-pointer text-gray-700 hover:bg-blue-50 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Week view</a>
     <a hx-get="{% url 'month-view'  current_date|date:'Y-m-d'  %}"
     hx-trigger="click"
     hx-target="#calendar-view"
     hx-push-url="true"
-    @click="openCalendarViewDropDown =! openCalendarViewDropDown"
+    @click="openCalendarViewDropDown = false"
     hx-swap="innerHTML"  class="cursor-pointer text-gray-700 hover:bg-blue-50 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Month view</a>
 </div>

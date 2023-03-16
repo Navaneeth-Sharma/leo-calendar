@@ -1,6 +1,6 @@
 {% load leocalendar_tags %}
 
-<div class="lg:flex lg:h-full lg:flex-col" id="calendar-view">
+<div class="lg:flex lg:h-full lg:flex-col" id="calendar-view" x-data="{ openCreateEventModal: true, openCalendarViewDropDown: false  }">
   <header class="flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6">
     <div>
       <h1 class="text-base font-semibold leading-6 text-gray-900">
@@ -35,24 +35,24 @@
         </button>
       </div>
       <div class="hidden md:ml-4 md:flex md:items-center">
-        <div class="relative"x-data="{ openCalendarViewDropDown: false }">
+        <div class="relative">
           <button @click="openCalendarViewDropDown =! openCalendarViewDropDown" id="calendarViewDropDownButton"  type="button" class="flex items-center rounded-md border border-gray-300 bg-white py-2 pl-3 pr-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">
             Month view
             <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
           </button>
-          <div x-show="openCalendarViewDropDown" @click.outside="openCalendarViewDropDown = false" id="calendarViewDropDown" class=" absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+          <div x-show.important="openCalendarViewDropDown" x-transition @click.outside="openCalendarViewDropDown = false" id="calendarViewDropDown" class=" absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
             {% include 'components/choose_views_large.html' %}
           </div>
         </div>
         <div class="ml-6 h-6 w-px bg-gray-300"></div>
         <button 
-        {% comment %} hx-get="{% url 'create-event' 'month' current_date|date:'Y-m-d' %}"  {% endcomment %}
+        hx-get="{% url 'create-event' 'month' current_date|date:'Y-m-d' %}" 
         hx-target="#createEventModal"
         hx-trigger="click"
         hx-swap="innerHTML"
-        _="on htmx:afterOnLoad wait 10ms then remove .hidden from #createEventModal" type="button" class="ml-6 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add event</button>
+        type="button" @click="openCreateEventModal = true" class="ml-6 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add event</button>
       </div>
       <div class="relative ml-6 md:hidden">
         <button _="on click toggle .hidden on #calendarMobileViewDropDown" type="button" class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500" id="menu-0-button" aria-expanded="false" aria-haspopup="true">

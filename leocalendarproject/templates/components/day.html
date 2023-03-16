@@ -1,6 +1,6 @@
 {% load leocalendar_tags %}
 
-<div class="flex h-full flex-col" id="calendar-view">
+<div class="flex h-full flex-col" id="calendar-view" x-data="{ openCreateEventModal: true, openCalendarViewDropDown: false  }">
   <header class="flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6 bg-white sticky top-[0px] z-40">
     <div>
       <h1 class="text-base font-semibold leading-6 text-gray-900">
@@ -42,7 +42,7 @@
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
               </svg>
             </button>
-            <div x-show="openCalendarViewDropDown" @click.outside="openCalendarViewDropDown = false" id="calendarViewDropDown" class=" absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div x-show.important="openCalendarViewDropDown" @click.outside="openCalendarViewDropDown = false" id="calendarViewDropDown" class=" absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               {% include 'components/choose_views_large.html' %}
             </div>
         </div>
@@ -51,7 +51,7 @@
         hx-target="#createEventModal"
         hx-trigger="click"
         hx-swap="innerHTML"
-        _="on htmx:afterOnLoad wait 10ms then remove .hidden from #createEventModal" type="button" class="ml-6 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add event</button>
+        @click="openCreateEventModal = true" type="button" class="ml-6 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add event</button>
       </div>
       <div class="relative ml-6 md:hidden">
         <button _="on click toggle .hidden on #calendarMobileViewDropDown" type="button" class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500" id="menu-0-button" aria-expanded="false" aria-haspopup="true">
@@ -101,11 +101,11 @@
                       end: convertUTCDateToLocalDate('{{ event.end|date:"c" }}') }"
                       x-bind:style="'grid-row: ' + getGridRow(start) + ' / span ' + getGridSpan(start, end)">
                           <a 
-                          {% comment %} hx-get="{% url 'edit-event' 'day' event.id current_date|date:'Y-m-d' %}" {% endcomment %}
+                          hx-get="{% url 'edit-event' 'day' event.id current_date|date:'Y-m-d' %}"
                           hx-target="#createEventModal"
                           hx-trigger="click"
                           hx-swap="innerHTML"
-                          _="on htmx:afterOnLoad wait 10ms then remove .hidden from #createEventModal on click add .hidden to #calendarMobileViewDropDown" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">
+                          @click="openCreateEventModal = true" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">
                           <p class="order-1 font-semibold text-blue-700">{{event.title}}</p>
                             <p class="text-blue-500 group-hover:text-blue-700"><time datetime="{{event.start}}"  x-text="`${start.getHours()}:${start.getMinutes()}`"></time></p>
                           </a>
