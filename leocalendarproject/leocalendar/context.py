@@ -46,7 +46,7 @@ class ContextHandler:
                 user=self.user
             )
         except Exception as e:
-            print(f"Exception occured while creating the Schdular Calendar object")
+            print(f"Exception {e} occured while creating the Schdular Calendar object")
 
         self.context["viewname"] = "calendar"
 
@@ -105,7 +105,7 @@ class ContextHandler:
             events_dict[date_str].append(event)
 
         # Add the dictionary to the context
-        self.context["events"] = events_dict
+        self.context["events"] = dict(events_dict)
 
     def set_context_for_calendar(self, calendar_view, date):
         if date is None:
