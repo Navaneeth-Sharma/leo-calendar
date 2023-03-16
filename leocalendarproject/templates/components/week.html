@@ -1,7 +1,7 @@
 {% load leocalendar_tags %}
 
 <div class="flex h-full flex-col" id="calendar-view" x-data="{ openCreateEventModal: true }">
-  <header class="flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6 bg-white sticky top-[0px] z-10" >
+  <header class="flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6 top-0 sticky z-10 bg-white" >
     <div>
       <h1 class="text-base font-semibold leading-6 text-gray-900">
         <time datetime="2022-01-22" class="sm:hidden">{{current_date|date:"jS F Y"}}</time>
@@ -76,7 +76,7 @@
     <div class="isolate flex flex-auto overflow-hidden bg-white sm:flex-row flex-col " x-data="{timezone: String(new Date()).match(/GMT\+[0-9]+/)[0].replace(/GMT\+(\d\d)(\d\d)/, 'GMT+$1:$2')}">
       {% include 'components/common_calendar.html' %}
       
-      <div style="width: 165%" class="flex flex-auto flex-col overflow-y-scroll max-w-full" >
+      <div style="width: 165%" class="z-0 flex flex-auto flex-col overflow-y-scroll max-w-full" >
         <div class="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5">
           <div x-data="{ days: ['M', 'T', 'W', 'T', 'F', 'S', 'S'] }" class="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
             <div class="col-end-1 w-14"> 

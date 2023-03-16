@@ -6,30 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://unpkg.com/htmx.org@1.8.5"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
     <style>
         .tooltip:hover .tooltip-text {
-          opacity: 1;
+        opacity: 1;
         }
         body{
             font-family: 'Inter var';
         }
+        html, body {margin: 0; height: 100%; overflow: hidden}
     </style>
-    
-</head>
-<body>
-    
-
-
-
-{% if calendar_view == "day" %}
-    {% include 'components/day.html' %}
-{% elif calendar_view == "week" %}
-    {% include 'components/week.html' %}
-{% elif calendar_view == "month" %}
-    {% include 'components/month.html' %}
-{% endif %}
-
 
 <script type="text/javascript">
     function setTimezoneOffset() {
@@ -39,7 +29,7 @@
     }
     setTimezoneOffset();
 
-    
+
     function convertUTCDateToLocalDate(dateString) {
         if (dateString === ''){
             return ''
@@ -50,7 +40,7 @@
 
     function convertLocalDateToUTCDate(date) {
       var newDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
-    
+
       return newDate;
     }
 
@@ -74,7 +64,7 @@
         var delta = ((endHour * 12) + (endMinute / 5) + 2) - ((startHour * 12) + (startMinute / 5) + 2);
         return Math.floor(delta);
       }
-      
+
     function getTimeForEventForm (datetime){
         try{
             return datetime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })
@@ -95,7 +85,17 @@
 
 
 </script>
-<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+</head>
+<body>
+
+{% if calendar_view == "day" %}
+    {% include 'components/day.html' %}
+{% elif calendar_view == "week" %}
+    {% include 'components/week.html' %}
+{% elif calendar_view == "month" %}
+    {% include 'components/month.html' %}
+{% endif %}
+
 </body>
 </html>
