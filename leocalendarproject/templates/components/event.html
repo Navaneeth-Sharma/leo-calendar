@@ -1,6 +1,62 @@
 {% load leocalendar_tags %}
 {% load tz %}
 
+<style>
+    .email-input {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 5px;
+      }
+      
+      .email-list {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .email-tag {
+        background-color: #eee;
+        color: #333;
+        border-radius: 20px;
+        padding: 5px 10px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .email-tag .email {
+        margin-right: 5px;
+      }
+      
+      .email-tag .remove {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+      }
+      
+</style>
+
+<script>
+    function getEmails() {
+      return {
+        emailInput: '',
+        emails: [],
+        addEmail() {
+          if (this.emailInput !== '') {
+            this.emails.push(this.emailInput.trim());
+            this.emailInput = '';
+          }
+        },
+      };
+    }
+  </script>
+
 <div x-show="openCreateEventModal" style=" background-color: rgba(0, 0, 0, 0.8); overflow-y: scroll;" class="fixed z-100 top-0 right-0 left-0 bottom-0 h-full w-full">
     <div class="modal-overlay fixed top-0 left-0 bottom-0 right-0 bg-gray-50 bg-opacity-10"
     @click="openCreateEventModal = false"></div>
@@ -43,6 +99,35 @@
 
                 <label class="text-gray-600 block mt-3 mb-1 font-bold text-sm tracking-wide" >Event end time</label>
                 <input type="time" class="bg-gray-50 appearance-none border-2 border-gray-200 rounded-lg w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" name="event_end_time" x-model="getTimeForEventForm(end)" required>
+            </div>
+            <div class="mb-4">
+                <label class="text-gray-600 block mb-1 font-bold text-sm tracking-wide">Guests</label>
+                <div x-data="{
+                    tags: [],
+                    input: '',
+                    addTag: function() {
+                        var regexExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (this.input.trim() === '') return;
+                        if (this.tags.indexOf(this.input) !== -1) return;
+                        if (!regexExp.test(this.input)) return;
+                        this.tags.push(this.input);
+                        this.input = '';
+                    },
+                    removeTag: function(index) {
+                        this.tags.splice(index, 1);
+                    }
+                }">
+                    <div x-cloak x-ref="tagsInput" class="">
+                        <template x-for="(tag, index) in tags" :key="index">
+                            <span class="bg-gray-100 rounded-full p-1 m-2">
+                                <span x-text="tag"></span>
+                                <button @click.prevent="removeTag(index)" type="button" >&times;</button>
+                            </span>
+                        </template>
+                        <input x-model="input" @keydown.enter.prevent="addTag()" @keydown.del="removeTag(tags.length - 1)" type="email" class="form-control m-1 mt-3 w-full" placeholder="Type and press enter to add emails" />
+                    </div>
+                    <input x-cloak type="hidden" x-ref="originalInput" :name="'guest_emails'" :value="tags.join(',')" />
+                </div>
             </div>
 
 

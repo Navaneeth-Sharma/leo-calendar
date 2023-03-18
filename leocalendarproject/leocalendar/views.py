@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .utils import SCalendarEventManager
-from schedule.models.events import Event
+from .models import LeoEvent
 from .context import ContextHandler, CalendarView
 import logging
 from django.contrib.auth.decorators import login_required
@@ -33,7 +33,7 @@ def xcalendar_edit_event_view(request, view, event_id, date=None):
     user = request.user
     context_handler = ContextHandler(user)
     context_handler.set_context_for_calendar(calendar_view=view, date=date)
-    context_handler.context["selected_event"] = Event.objects.get(id=event_id)
+    context_handler.context["selected_event"] = LeoEvent.objects.get(id=event_id)
     return render(request, "components/event.html", context_handler.context)
 
 
@@ -43,7 +43,7 @@ def xcalendar_delete_event_view(request, view, event_id, date=None):
     context_handler.set_context_for_calendar(calendar_view=view, date=date)
 
     try:
-        Event.objects.get(id=event_id).delete()
+        LeoEvent.objects.get(id=event_id).delete()
         print(f"Event with id {event_id} has been deleted successfully!")
     except Exception as e:
         print(f"Exception occurred {e}, couldn't delete the event object")

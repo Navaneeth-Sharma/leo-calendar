@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet
 import calendar
 from schedule.models.calendars import Calendar
-from schedule.models.events import Event
+from leocalendar.models import LeoEvent
 import datetime
 import pytz
 import json
@@ -19,12 +19,12 @@ class XCalendarManager:
         return scalendar
 
     def get_events_for_calendar(self, scalendar, start_date, end_date):
-        return scalendar.events.filter(
-            start__gte=start_date, end__lt=end_date
+        return LeoEvent.objects.filter(
+            start__gte=start_date, end__lt=end_date, calendar=scalendar
         ).order_by("start")
 
     def get_events_for_class(self, scalendar, start_date, end_date):
-        return Event.objects.filter(
+        return LeoEvent.objects.filter(
             calendar=scalendar,
             start__gte=start_date,
             end__lt=end_date,
@@ -167,6 +167,10 @@ class SCalendarEventManager:
 
         event_form_dict["event_creator"] = request.user
 
+        event_form_dict["guest_emails"] = request.POST.get("guest_emails")
+
+        print(event_form_dict["guest_emails"])
+
         return event_form_dict
 
     def create_scalendar_event(self, request, context_handler):
@@ -177,13 +181,14 @@ class SCalendarEventManager:
                 f"Error {e} Caused while getting the info from request. unable to create the event!"
             )
         try:
-            Event.objects.create(
+            LeoEvent.objects.create(
                 title=event_form_dict.get("event_title"),
                 description=event_form_dict.get("event_description"),
                 start=event_form_dict.get("start_date"),
                 end=event_form_dict.get("end_date"),
                 calendar=context_handler.scalendar,
                 creator=event_form_dict.get("event_creator"),
+                emails=event_form_dict.get("guest_emails")
             )
         except Exception as e:
             print(f"Error Caused while creating the event!")
@@ -196,7 +201,7 @@ class SCalendarEventManager:
                 f"Error {e} Caused while getting the info from request. unable to create the event!"
             )
         try:
-            event_obj = Event.objects.filter(id=event_id)
+            event_obj = LeoEvent.objects.filter(id=event_id)
             event_obj.update(
                 title=event_form_dict.get("event_title"),
                 description=event_form_dict.get("event_description"),
@@ -204,6 +209,7 @@ class SCalendarEventManager:
                 end=event_form_dict.get("end_date"),
                 calendar=context_handler.scalendar,
                 creator=event_form_dict.get("event_creator"),
+                emails=event_form_dict.get("guest_emails")
             )
         except Exception as e:
             print(f"Error Caused while creating the event!")

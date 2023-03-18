@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import LeoEvent
 
-# Register your models here.
+class LeoEventAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(LeoEvent, LeoEventAdmin)
