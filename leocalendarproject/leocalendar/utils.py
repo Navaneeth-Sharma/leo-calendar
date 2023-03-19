@@ -280,14 +280,11 @@ def send_email(event_form_dict, context_handler):
     emails = event_form_dict.get("guest_emails").replace(" ", "")
 
     code = os.getenv("EMAIL_PASSWORD")
-
-    print(code)
-    email_sender = "navaneethsharma2310oct@gmail.com"
+    email_sender = os.getenv("EMAIL")
 
     subject = title
 
     message = MIMEMultipart("alternative")
-    message["Subject"] = "multipart test"
     message["From"] = email_sender
     message["To"] = emails
     message["Subject"] = subject
@@ -329,5 +326,4 @@ def send_email(event_form_dict, context_handler):
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         smtp.login(email_sender, code)
-        for email in emails.split(","):
-            smtp.sendmail(email_sender, email, message.as_string())
+        smtp.sendmail(email_sender, emails, message.as_string())
