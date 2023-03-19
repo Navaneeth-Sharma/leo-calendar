@@ -41,7 +41,7 @@
                             hx-trigger="click"
                             hx-target="#calendar-view"
                             hx-swap="innerHTML" class="bg-white py-1.5 text-gray-900 hover:bg-gray-100 focus:z-10">
-                            <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
+                            <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-cyan-600 font-semibold text-white">
                               {{day|date:"j"}}
                             </time>
                         </button>
@@ -51,7 +51,7 @@
                             hx-target="#calendar-view"
                             hx-swap="innerHTML"
                             class="bg-white py-1.5  text-gray-900 hover:bg-gray-100 focus:z-10">
-                            <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full {% if current_date|date:"Y-m-d" == day|date:"Y-m-d" %} bg-blue-200 border-blue-500 border font-semibold{% endif %}">
+                            <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full {% if current_date|date:"Y-m-d" == day|date:"Y-m-d" %} bg-cyan-200 border-cyan-500 border font-semibold{% endif %}">
                                 {{day|date:"j"}}
                             </time>
                         </button>

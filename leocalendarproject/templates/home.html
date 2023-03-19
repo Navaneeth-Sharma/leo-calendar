@@ -76,10 +76,14 @@
                             Leo Calendar
                         </a>
                         {% if not user.is_authenticated %}
-                        <a href="{% url 'account_login' %}"  class="p-3 m-3 border-2 border-[#f59e0b] text-white text-xl rounded">
+                        <a href="{% url 'account_login' %}"  class="p-3 m-3 border-2 border-white text-white transition ease-in delay-150 text-xl rounded">
                             Sign In
                         </a>
-                        {% endif %}
+                        {% else %}
+                        <a href="{% url 'account_logout' %}"  class="p-3 m-3 border-2 border-white text-white transition ease-in delay-150 text-xl rounded">
+                            Log Out
+                        </a>
+                        {% endif %}            
                     </div>
                 </div>
 

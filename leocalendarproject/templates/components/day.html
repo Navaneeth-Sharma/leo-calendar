@@ -2,15 +2,15 @@
 {% load static %}
 
 <div class="flex h-full flex-col" id="calendar-view" x-data="{ openCreateEventModal: true, openCalendarViewDropDown: false  }">
-  <header class="flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6 bg-white sticky top-[0px] z-40">
+  <header class="bg-gradient-to-r from-cyan-500 to-[#8d3f5e] flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6 bg-white sticky top-[0px] z-40">
     <div class="flex">
-      <a href="{% url 'home_view' %}"  ><img src="{% static 'images/leo.svg' %}" alt="" class="h-12 rounded-full border-2 border-cyan-500 mx-4 hover:shadow-lg hover:shadow-cyan-500/50 transition ease-in delay-200"></a>
+      <a href="{% url 'home_view' %}"  ><img src="{% static 'images/leo.svg' %}" alt="" class="h-12 rounded-full border-2 border-white mx-4 hover:shadow-lg hover:shadow-white-500/50 transition ease-in delay-200"></a>
       <div>
         <h1 class="text-base font-semibold leading-6 text-gray-900">
-          <time datetime="2022-01-22" class="sm:hidden">{{current_date|date:"jS F Y"}}</time>
-          <time datetime="2022-01-22" class="hidden sm:inline">{{current_date|date:"jS F Y"}}</time>
+          <time datetime="2022-01-22" class="sm:hidden text-white">{{current_date|date:"jS F Y"}}</time>
+          <time datetime="2022-01-22" class="hidden sm:inline text-white">{{current_date|date:"jS F Y"}}</time>
         </h1>
-        <p class="mt-1 text-sm text-gray-500">{{ current_date|date:"l" }}</p>
+        <p class="mt-1 text-sm text-gray-100">{{ current_date|date:"l" }}</p>
       </div>
     </div>
     <div class="flex items-center">
@@ -55,7 +55,7 @@
         hx-target="#createEventModal"
         hx-trigger="click"
         hx-swap="innerHTML"
-        @click="openCreateEventModal = true" type="button" class="ml-6 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Add event</button>
+        @click="openCreateEventModal = true" type="button" class="ml-6 rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2">Add event</button>
       </div>
       <div class="relative ml-6 md:hidden">
         <button _="on click toggle .hidden on #calendarMobileViewDropDown" type="button" class="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500" id="menu-0-button" aria-expanded="false" aria-haspopup="true">
@@ -111,9 +111,9 @@
                           hx-target="#createEventModal"
                           hx-trigger="click"
                           hx-swap="innerHTML"
-                          @click="openCreateEventModal = true" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">
-                          <p class="order-1 font-semibold text-blue-700">{{event.title}}</p>
-                            <p class="text-blue-500 group-hover:text-blue-700"><time datetime="{{event.start}}"  x-text="`${start.getHours()}:${start.getMinutes()}`"></time></p>
+                          @click="openCreateEventModal = true" class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-cyan-50 p-2 text-xs leading-5 hover:bg-cyan-100">
+                          <p class="order-1 font-semibold text-cyan-700">{{event.title}}</p>
+                            <p class="text-cyan-500 group-hover:text-cyan-700"><time datetime="{{event.start}}"  x-text="`${start.getHours()}:${start.getMinutes()}`"></time></p>
                           </a>
                       </li>
                   {% endfor %}
