@@ -67,8 +67,10 @@
       </div>
     </div>
   </header>
-  <div id="createEventModal" class="relative z-10">
+
+  <div id="createEventModal" style="z-index: 100;">
   </div>
+
   <div class="isolate flex flex-auto overflow-hidden bg-white sm:flex-row flex-col" x-data="{timezone: String(new Date()).match(/GMT\+[0-9]+/)[0].replace(/GMT\+(\d\d)(\d\d)/, 'GMT+$1:$2')}">
 
       {% include 'components/common_calendar.html' %}
@@ -99,7 +101,7 @@
                         <li class="tooltip relative" x-data="{ start: convertUTCDateToLocalDate('{{ event.start|date:"c" }}'), 
                         end: convertUTCDateToLocalDate('{{ event.end|date:"c" }}') }">
                           <a 
-                          {% comment %} hx-get="{% url 'edit-event' 'month' event.id current_date|date:'Y-m-d' %}" {% endcomment %}
+                          hx-get="{% url 'edit-event' 'month' event.id current_date|date:'Y-m-d' %}"
                           hx-target="#createEventModal"
                           hx-trigger="click"
                           hx-swap="innerHTML"
@@ -122,11 +124,11 @@
                         <li class="tooltip relative" x-data="{ start: convertUTCDateToLocalDate('{{ event.start|date:"c" }}'), 
                         end: convertUTCDateToLocalDate('{{ event.end|date:"c" }}') }">
                           <a 
-                          {% comment %} hx-get="{% url 'edit-event' 'month' event.id current_date|date:'Y-m-d' %}" {% endcomment %}
+                          hx-get="{% url 'edit-event' 'month' event.id current_date|date:'Y-m-d' %}"
                           hx-target="#createEventModal"
                           hx-trigger="click"
                           hx-swap="innerHTML"
-                          _="on htmx:afterOnLoad wait 10ms then remove .hidden from #createEventModal on click add .hidden to #calendarMobileViewDropDown" class="group flex">
+                          @click="openCreateEventModal = true" class="group flex">
                             <p class="flex-auto font-medium text-gray-900 group-hover:text-blue-600">{{event.title}}</p>
                             <span class="tooltip-text absolute bg-gray-800 text-white text-xs rounded py-3 px-2 opacity-0 bottom-full left-1/2 transform -translate-x-1/2 transition-opacity duration-300">
                               <span class="mb-2">{{event.title}} starting at <time x-text="`${start.getHours()}:${start.getMinutes()}`"></time></span> on <time x-text="`${start.getDate()} ${start.toLocaleString('default', { month: 'long' })}`"></time>

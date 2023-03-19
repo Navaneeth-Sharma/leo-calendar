@@ -6,6 +6,12 @@ import datetime
 import pytz
 import json
 import redis
+from email.message import EmailMessage
+import ssl
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 class XCalendarManager:
@@ -188,10 +194,12 @@ class SCalendarEventManager:
                 end=event_form_dict.get("end_date"),
                 calendar=context_handler.scalendar,
                 creator=event_form_dict.get("event_creator"),
-                emails=event_form_dict.get("guest_emails")
+                emails=event_form_dict.get("guest_emails"),
             )
+
+            send_email(event_form_dict, context_handler)
         except Exception as e:
-            print(f"Error Caused while creating the event!")
+            print(f"Error Caused while creating the event!, {e}")
 
     def edit_scalendar_event(self, request, context_handler, event_id):
         try:
@@ -209,7 +217,7 @@ class SCalendarEventManager:
                 end=event_form_dict.get("end_date"),
                 calendar=context_handler.scalendar,
                 creator=event_form_dict.get("event_creator"),
-                emails=event_form_dict.get("guest_emails")
+                emails=event_form_dict.get("guest_emails"),
             )
         except Exception as e:
             print(f"Error Caused while creating the event!")
@@ -260,3 +268,66 @@ def redis_json_set_session(key, value, session_key):
 
 def redis_json_get_session(key, session_key):
     return redis_json_get(key, session_key)
+
+
+def send_email(event_form_dict, context_handler):
+    title = event_form_dict.get("event_title")
+    description = event_form_dict.get("event_description")
+    start = event_form_dict.get("start_date")
+    end = event_form_dict.get("end_date")
+    calendar = context_handler.scalendar
+    creator = event_form_dict.get("event_creator")
+    emails = event_form_dict.get("guest_emails").replace(" ", "")
+
+    code = os.getenv("EMAIL_PASSWORD")
+
+    print(code)
+    email_sender = "navaneethsharma2310oct@gmail.com"
+
+    subject = title
+
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "multipart test"
+    message["From"] = email_sender
+    message["To"] = emails
+    message["Subject"] = subject
+
+    # Create the plain-text and HTML version of your message
+    text = f"""\
+    Event {title} has been set from {start} to {end}
+
+    Details:
+    {description}
+     Start: {str(start)}
+     End: {str(end)}
+    """
+
+    html = f"""\
+    <html>
+    <body>
+        <h1>Event {title} has been set from {start} to {end}</h1>
+
+        <h3>Details</h3>
+        {description}
+
+        Start: {str(start)}
+        End: {str(end)}
+    </body>
+    </html>
+    """
+
+    # Turn these into plain/html MIMEText objects
+    part1 = MIMEText(text, "plain")
+    part2 = MIMEText(html, "html")
+
+    # Add HTML/plain-text parts to MIMEMultipart message
+    # The email client will try to render the last part first
+    message.attach(part1)
+    message.attach(part2)
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+        smtp.login(email_sender, code)
+        for email in emails.split(","):
+            smtp.sendmail(email_sender, email, message.as_string())
