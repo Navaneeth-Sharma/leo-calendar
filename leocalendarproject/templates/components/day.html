@@ -1,13 +1,17 @@
 {% load leocalendar_tags %}
+{% load static %}
 
 <div class="flex h-full flex-col" id="calendar-view" x-data="{ openCreateEventModal: true, openCalendarViewDropDown: false  }">
   <header class="flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6 bg-white sticky top-[0px] z-40">
-    <div>
-      <h1 class="text-base font-semibold leading-6 text-gray-900">
-        <time datetime="2022-01-22" class="sm:hidden">{{ current_date|date:"jS F Y" }}</time>
-        <time datetime="2022-01-22" class="hidden sm:inline">{{ current_date|date:"jS F Y" }}</time>
-      </h1>
-      <p class="mt-1 text-sm text-gray-500">{{ current_date|date:"l" }}</p>
+    <div class="flex">
+      <a href="{% url 'home_view' %}"  ><img src="{% static 'images/leo.svg' %}" alt="" class="h-12 rounded-full border-2 border-cyan-500 mx-4 hover:shadow-lg hover:shadow-cyan-500/50 transition ease-in delay-200"></a>
+      <div>
+        <h1 class="text-base font-semibold leading-6 text-gray-900">
+          <time datetime="2022-01-22" class="sm:hidden">{{current_date|date:"jS F Y"}}</time>
+          <time datetime="2022-01-22" class="hidden sm:inline">{{current_date|date:"jS F Y"}}</time>
+        </h1>
+        <p class="mt-1 text-sm text-gray-500">{{ current_date|date:"l" }}</p>
+      </div>
     </div>
     <div class="flex items-center">
       <div class="flex items-center rounded-md shadow-sm md:items-stretch">

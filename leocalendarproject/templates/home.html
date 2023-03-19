@@ -71,7 +71,8 @@
 
                     <div class="my-12">
                         
-                        <a href="{% url 'week-view' %}" class="p-3 m-3 border-2 bg-[#f59e0b] hover:bg-[#facc15] text-xl rounded" title="RRRR">
+                        <a href="{% url 'week-view' %}" class="p-3 m-3 border-2 bg-[#f59e0b] hover:bg-[#facc15] text-xl rounded
+                        shadow-lg shadow-[#facc15]-500/50 transition ease-in delay-150" title="RRRR">
                             Leo Calendar
                         </a>
                         {% if not user.is_authenticated %}
