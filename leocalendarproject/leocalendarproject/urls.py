@@ -16,8 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include, re_path
+from django_registration.backends.one_step.views import RegistrationView
+from leocalendarproject.views import home_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    re_path(r'^calendar/', include('leocalendar.urls')),
+    re_path(r"^calendar/", include("leocalendar.urls")),
+    re_path(
+        r"^accounts/register/",
+        RegistrationView.as_view(),
+        name="registration_register",
+    ),
+    # re_path(r"^accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("allauth.urls")),
+    path("accounts/", include("django_registration.backends.one_step.urls")),
+    re_path(r"^", home_view, name="home_view"),
 ]

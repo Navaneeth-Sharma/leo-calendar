@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+    <style>
+        .tooltip:hover .tooltip-text {
+        opacity: 1;
+        }
+        body{
+            font-family: 'Inter var';
+        }
+        html, body {margin: 0; height: 100%; overflow: hidden}
+
+        .animate-gradient {
+            background-image: linear-gradient(-45deg, #f6b5c6, #b78fdd, #7c82ab, #69b7db, #f6b5c6, #b78fdd, #7c82ab);
+            background-size: 400% 400%;
+            animation: gradient 10s ease-in-out infinite;
+        }
+    </style>
+
+</head>
+<body>
+
+    <nav>
+
+    </nav>
+
+
+    <main class="bg-gradient-to-r from-cyan-500 to-[#8d3f5e] w-full h-full ">
+        <div class=" flex w-full h-full">
+            <div class="flex flex-col w-1/2 justify-center">
+                <div class="max-w-7xl flex flex-col text-center items-center"
+            x-data="{
+                        text: '',
+                        textArray : ['The Only Calendar You Need!'],
+                        textIndex: 0,
+                        charIndex: 0,
+                        pause: 1000,
+                        typeSpeed: 120,
+                        direction: 'forward'
+                    }"
+            x-init="setInterval(function(){
+                        let current = $data.textArray[ $data.textIndex ];
+                        if($data.charIndex > current.length){
+                            $data.direction = 'backward';
+                        }   
+                        
+                        $data.text = current.substring(0, $data.charIndex);
+                        if($data.direction == 'forward'){
+                            $data.charIndex += 1;
+                        } else {
+                            $data.charIndex -= 1;
+                            if($data.charIndex == 0){
+                                $data.direction = 'forward';
+                            }
+                        }
+                        
+                    }, $data.typeSpeed);">
+                    <h1 class=" mx-6 text-6xl font-black text-white">Leo Calendar</h1>
+                    <h3 class=" mx-6 my-6 text-3xl font-white text-gray-200"  x-text="text"> The Only Calendar You Need!</h3>
+
+                    <div class="my-12">
+                        
+                        <a href="{% url 'week-view' %}" class="p-3 m-3 border-2 bg-[#f59e0b] hover:bg-[#facc15] text-xl rounded" title="RRRR">
+                            Leo Calendar
+                        </a>
+                        {% if not user.is_authenticated %}
+                        <a href="{% url 'account_login' %}"  class="p-3 m-3 border-2 border-[#f59e0b] text-white text-xl rounded">
+                            Sign In
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex-auto animate-pulse opacity-75">
+                <img src="{% static 'images/leo.svg' %}" alt="" class="h-full">
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

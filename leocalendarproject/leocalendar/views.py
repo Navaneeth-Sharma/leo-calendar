@@ -51,7 +51,7 @@ def xcalendar_delete_event_view(request, view, event_id, date=None):
     return render(request, "base.html", context_handler.context)
 
 
-# @login_required(redirect_field_name="account_login")
+@login_required(redirect_field_name="account_login")
 def calendar_view(
     request,
     calendar_view,

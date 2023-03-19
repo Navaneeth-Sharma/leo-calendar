@@ -48,4 +48,7 @@ urlpatterns = [
         xcalendar_delete_event_view,
         name="delete-event",
     ),
+
+    path("", week_view, name="week-view"),
+
 ]
