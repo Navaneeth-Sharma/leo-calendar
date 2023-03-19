@@ -291,24 +291,40 @@ def send_email(event_form_dict, context_handler):
 
     # Create the plain-text and HTML version of your message
     text = f"""\
-    Event {title} has been set from {start} to {end}
+    Subject: Reminder: {title} from {start.strftime('%Y-%m-%d %I:%M %p')} to {end.strftime('%Y-%m-%d %I:%M %p')} (UTC)
 
-    Details:
-    {description}
-     Start: {str(start)}
-     End: {str(end)}
+    This is a reminder that the Test Event has been scheduled from {start.strftime('%Y-%m-%d %I:%M %p')} to {end.strftime('%Y-%m-%d %I:%M %p')} (UTC). Please make sure to attend the event on time.
+
+    Event Details:
+    Message Start: {start.strftime('%Y-%m-%d %I:%M %p')} (UTC)
+    Message End: {end.strftime('%Y-%m-%d %I:%M %p')} (UTC)
+
+    If you have any questions or concerns, please feel free to reach out to us.
+
+    Best regards,
+    Leo Calendar
+
     """
 
     html = f"""\
+    <!DOCTYPE html>
     <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{title}</title>
+    </head>
     <body>
-        <h1>Event {title} has been set from {start} to {end}</h1>
-
-        <h3>Details</h3>
-        {description}
-
-        Start: {str(start)}
-        End: {str(end)}
+        <h3>Reminder: Test Event from {start.strftime('%Y-%m-%d %I:%M %p')} to {end.strftime('%Y-%m-%d %I:%M %p')} (UTC)</h3>
+        <p>This is a reminder that the Test Event has been scheduled from {start.strftime('%Y-%m-%d %I:%M %p')} to {end.strftime('%Y-%m-%d %I:%M %p')} (UTC). 
+        Please make sure to attend the event on time.</p>
+        <p><strong>Event Details:</strong></p>
+        <ul>
+        <li>Message Start:{start.strftime('%Y-%m-%d %I:%M %p')}</li>
+        <li>Message End: {end.strftime('%Y-%m-%d %I:%M %p')}</li>
+        </ul>
+        <p>If you have any questions or concerns, please feel free to reach out to us.</p>
+        <p>Best regards,</p>
+        <p>Leo Calendar</p>
     </body>
     </html>
     """
