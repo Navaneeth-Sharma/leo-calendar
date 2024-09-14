@@ -1,1 +1,11 @@
 django-scheduler==0.10.1
+Django
+crispy-tailwind
+django-taggit
+django-crispy-forms
+python-dotenv
+django-allauth
+django-tagulous==1.3.0
+django-allauth[socialaccount]
+django-registration
+redis
