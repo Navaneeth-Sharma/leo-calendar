@@ -1,5 +1,5 @@
 # leo-calendar
-End to End Calendar for django
+End to End Full stack Calendar App from scratch (uses couple of djnago tools along with redis) with django and alpine js (uses vue js engine)
 
 
 ## DEMO
